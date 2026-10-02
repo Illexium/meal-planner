@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+
+<body>
+
+    <h1>Products</h1>
+
+    <form method="POST" action="/products/add">
+        <input type="text" name="name" placeholder="Product name" required>
+        <input type="text" name="category" placeholder="Category" required>
+        <input type="text" name="unit" placeholder="Unit" required>
+
+        <button type="submit">Add product</button>
+    </form>
+
+    <hr>
+
+    <h2>Product list</h2>
+
+    <ul>
+        {% for product in products %}
+        <li>
+            {{ product.product_name }}
+            — {{ product.product_category }}
+            — {{ product.product_unit }}
+        </li>
+        {% else %}
+        <li>No products yet.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+
+</html>
