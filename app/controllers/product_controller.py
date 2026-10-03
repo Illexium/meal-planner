@@ -13,9 +13,12 @@ def product_list():
 
 @product_bp.route("/products/add", methods=["POST"])
 def add_product():
-    name = request.form["name"]
-    category = request.form["category"]
-    unit = request.form["unit"]
+    name = request.form["name"].strip()
+    category = request.form["category"].strip()
+    unit = request.form["unit"].strip()
+
+    if not name or not category or not unit:
+        return "All product fields are required.", 400
 
     product = Product(
         product_name=name,
@@ -37,9 +40,14 @@ def edit_product(product_id):
     product = Product.query.get_or_404(product_id)
 
     if request.method == "POST":
-        product.product_name = request.form["name"]
-        product.product_category = request.form["category"]
-        product.product_unit = request.form["unit"]
+        name = request.form["name"].strip()
+        category = request.form["category"].strip()
+        unit = request.form["unit"].strip()
+
+        if not name or not category or not unit:
+            return "All product fields are required.", 400
+
+        product.update_product(name, category, unit)
 
         db.session.commit()
 
@@ -55,8 +63,18 @@ def edit_product(product_id):
     "/products/delete/<int:product_id>",
     methods=["POST"]
 )
+@product_bp.route(
+    "/products/delete/<int:product_id>",
+    methods=["POST"]
+)
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)
+
+    if not product.can_be_deleted():
+        return (
+            "Cannot delete product because it is used in inventory.",
+            400
+        )
 
     db.session.delete(product)
     db.session.commit()

@@ -13,7 +13,10 @@ def create_app():
     db.init_app(app)
 
     from app.controllers.product_controller import product_bp
+    from app.controllers.inventory_controller import inventory_bp
+
     app.register_blueprint(product_bp)
+    app.register_blueprint(inventory_bp)
 
     @app.route("/")
     def home():

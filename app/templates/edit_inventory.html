@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Inventory Item</title>
+</head>
+
+<body>
+
+    <h1>Edit Inventory Item</h1>
+
+    <form method="POST">
+
+        <label>Product:</label>
+
+        <select name="product_id" required>
+
+            {% for product in products %}
+            <option value="{{ product.product_id }}" {% if product.product_id==item.product_id %} selected {% endif %}>
+                {{ product.product_name }}
+            </option>
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <label>Quantity:</label>
+
+        <input type="number" step="0.01" name="quantity" value="{{ item.quantity }}" required>
+
+        <br><br>
+
+        <label>Expiration date:</label>
+
+        <input type="date" name="expiration_date" value="{{ item.expiration_date or '' }}">
+
+        <br><br>
+
+        <button type="submit">
+            Save changes
+        </button>
+
+        <a href="{{ url_for('inventory.inventory_list') }}">
+            Cancel
+        </a>
+
+    </form>
+
+</body>
+<nav>
+    <a href="{{ url_for('products.product_list') }}">Products</a>
+    |
+    <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
+</nav>
+
+<hr>
+
+</html>
