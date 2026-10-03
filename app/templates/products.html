@@ -10,9 +10,14 @@
 
     <h1>Products</h1>
 
-    <form method="POST" action="/products/add">
+    <h2>Add product</h2>
+
+    <form method="POST" action="{{ url_for('products.add_product') }}">
+
         <input type="text" name="name" placeholder="Product name" required>
+
         <input type="text" name="category" placeholder="Category" required>
+
         <input type="text" name="unit" placeholder="Unit" required>
 
         <button type="submit">Add product</button>
@@ -22,17 +27,64 @@
 
     <h2>Product list</h2>
 
-    <ul>
-        {% for product in products %}
-        <li>
-            {{ product.product_name }}
-            — {{ product.product_category }}
-            — {{ product.product_unit }}
-        </li>
-        {% else %}
-        <li>No products yet.</li>
-        {% endfor %}
-    </ul>
+    {% if products %}
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Unit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for product in products %}
+
+            <tr>
+
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.product_category }}</td>
+                <td>{{ product.product_unit }}</td>
+
+                <td>
+
+                    <a href="{{ url_for(
+                                'products.edit_product',
+                                product_id=product.product_id
+                            ) }}">
+                        Edit
+                    </a>
+
+                    <form method="POST" action="{{ url_for(
+                                      'products.delete_product',
+                                      product_id=product.product_id
+                                  ) }}" style="display: inline;">
+
+                        <button type="submit">
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <p>No products yet.</p>
+
+    {% endif %}
 
 </body>
 
