@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Ingredients</title>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{{ url_for('products.product_list') }}">Products</a>
+        |
+        <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
+        |
+        <a href="{{ url_for('recipes.recipe_list') }}">Recipes</a>
+    </nav>
+
+    <hr>
+
+    <h1>{{ recipe.recipe_name }}</h1>
+
+    <p>
+        {{ recipe.recipe_descr }}
+    </p>
+
+    <p>
+        Servings: {{ recipe.servings }}
+    </p>
+
+    <hr>
+
+    <h2>Add ingredient</h2>
+
+    <form method="POST" action="{{ url_for(
+              'recipes.add_ingredient',
+              recipe_id=recipe.recipe_id
+          ) }}">
+
+        <select name="product_id" required>
+
+            <option value="">
+                Select product
+            </option>
+
+            {% for product in products %}
+
+            <option value="{{ product.product_id }}">
+                {{ product.product_name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <input type="number" step="0.01" min="0.01" name="quantity" placeholder="Quantity" required>
+
+        <input type="text" name="unit" placeholder="Unit" required>
+
+        <button type="submit">
+            Add ingredient
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Ingredients</h2>
+
+    {% if recipe.ingredients %}
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for ingredient in recipe.ingredients %}
+
+            <tr>
+                <td>
+                    {{ ingredient.product.product_name }}
+                </td>
+
+                <td>
+                    {{ ingredient.ingredient_quantity }}
+                </td>
+
+                <td>
+                    {{ ingredient.ingredient_unit }}
+                </td>
+
+                <td>
+
+                    <a href="{{ url_for(
+                                'recipes.edit_ingredient',
+                                recipe_id=recipe.recipe_id,
+                                ingredient_id=ingredient.ingredient_id
+                            ) }}">
+                        Edit
+                    </a>
+
+                    <form method="POST" action="{{ url_for(
+                                      'recipes.delete_ingredient',
+                                      recipe_id=recipe.recipe_id,
+                                      ingredient_id=ingredient.ingredient_id
+                                  ) }}" style="display: inline;">
+
+                        <button type="submit">
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <p>No ingredients yet.</p>
+
+    {% endif %}
+
+</body>

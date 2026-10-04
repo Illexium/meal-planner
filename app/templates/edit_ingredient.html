@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Ingredient</title>
+</head>
+
+<body>
+
+    <h1>Edit Ingredient</h1>
+
+    <form method="POST">
+
+        <label>Product:</label>
+
+        <select name="product_id" required>
+
+            {% for product in products %}
+
+            <option value="{{ product.product_id }}" {% if product.product_id==ingredient.product_id %} selected {%
+                endif %}>
+                {{ product.product_name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <label>Quantity:</label>
+
+        <input type="number" step="0.01" min="0.01" name="quantity" value="{{ ingredient.ingredient_quantity }}"
+            required>
+
+        <br><br>
+
+        <label>Unit:</label>
+
+        <input type="text" name="unit" value="{{ ingredient.ingredient_unit }}" required>
+
+        <br><br>
+
+        <button type="submit">
+            Save changes
+        </button>
+
+        <a href="{{ url_for(
+            'recipes.recipe_ingredients',
+            recipe_id=recipe.recipe_id
+        ) }}">
+            Cancel
+        </a>
+
+    </form>
+
+</body>
+
+</html>

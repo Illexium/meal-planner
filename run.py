@@ -1,5 +1,12 @@
 from app import create_app, db
-from app.models import Product
+from app.models import (
+    Product,
+    InventoryItem,
+    Recipe,
+    Ingredient,
+    MealPlan,
+    MealPlanEntry
+)
 
 app = create_app()
 

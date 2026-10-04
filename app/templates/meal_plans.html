@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Meal Plans</title>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{{ url_for('products.product_list') }}">
+            Products
+        </a>
+        |
+        <a href="{{ url_for('inventory.inventory_list') }}">
+            Inventory
+        </a>
+        |
+        <a href="{{ url_for('recipes.recipe_list') }}">
+            Recipes
+        </a>
+        |
+        <a href="{{ url_for('meal_plans.meal_plan_list') }}">
+            Meal Plans
+        </a>
+    </nav>
+
+    <hr>
+
+    <h1>Meal Plans</h1>
+
+    <h2>Create meal plan</h2>
+
+    <form method="POST" action="{{ url_for('meal_plans.add_meal_plan') }}">
+
+        <label>Start date:</label>
+
+        <input type="date" name="start_date" required>
+
+        <label>End date:</label>
+
+        <input type="date" name="end_date" required>
+
+        <button type="submit">
+            Create meal plan
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Meal plan list</h2>
+
+    {% if meal_plans %}
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+            <tr>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for plan in meal_plans %}
+
+            <tr>
+                <td>
+                    {{ plan.start_date }}
+                </td>
+
+                <td>
+                    {{ plan.end_date }}
+                </td>
+
+                <td>
+
+                    <a href="{{ url_for(
+                                'meal_plans.meal_plan_details',
+                                meal_plan_id=plan.meal_plan_id
+                            ) }}">
+                        Open
+                    </a>
+                    <a href="{{ url_for(
+            'meal_plans.edit_meal_plan',
+            meal_plan_id=plan.meal_plan_id
+        ) }}">
+                        Edit
+                    </a>
+
+                    <form method="POST" action="{{ url_for(
+                                    'meal_plans.delete_meal_plan',
+                                    meal_plan_id=plan.meal_plan_id
+                                ) }}" style="display: inline;">
+
+                        <button type="submit">
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <p>No meal plans yet.</p>
+
+    {% endif %}
+
+</body>
+
+</html>

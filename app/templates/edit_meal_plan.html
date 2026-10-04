@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Meal Plan</title>
+</head>
+
+<body>
+
+    <h1>Edit Meal Plan</h1>
+
+    <form method="POST">
+
+        <label>Start date:</label>
+
+        <input type="date" name="start_date" value="{{ meal_plan.start_date }}" required>
+
+        <br><br>
+
+        <label>End date:</label>
+
+        <input type="date" name="end_date" value="{{ meal_plan.end_date }}" required>
+
+        <br><br>
+
+        <button type="submit">
+            Save changes
+        </button>
+
+        <a href="{{ url_for('meal_plans.meal_plan_list') }}">
+            Cancel
+        </a>
+
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes</title>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{{ url_for('products.product_list') }}">Products</a>
+        |
+        <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
+        |
+        <a href="{{ url_for('recipes.recipe_list') }}">Recipes</a>
+    </nav>
+
+    <hr>
+
+    <h1>Recipes</h1>
+
+    <h2>Add recipe</h2>
+
+    <form method="POST" action="{{ url_for('recipes.add_recipe') }}">
+
+        <input type="text" name="name" placeholder="Recipe name" required>
+
+        <input type="text" name="description" placeholder="Description">
+
+        <input type="number" name="servings" min="1" placeholder="Servings" required>
+
+        <button type="submit">
+            Add recipe
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Recipe list</h2>
+
+    {% if recipes %}
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Servings</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for recipe in recipes %}
+
+            <tr>
+                <td>{{ recipe.recipe_name }}</td>
+                <td>{{ recipe.recipe_descr }}</td>
+                <td>{{ recipe.servings }}</td>
+
+                <td>
+                    <a href="{{ url_for(
+                    'recipes.recipe_ingredients',
+                    recipe_id=recipe.recipe_id
+                ) }}">
+                        Ingredients
+                    </a>
+                    <a href="{{ url_for(
+            'recipes.edit_recipe',
+            recipe_id=recipe.recipe_id
+        ) }}">
+                        Edit
+                    </a>
+
+                    <form method="POST" action="{{ url_for(
+                  'recipes.delete_recipe',
+                  recipe_id=recipe.recipe_id
+              ) }}" style="display: inline;">
+
+
+                        <button type="submit">
+                            Delete
+                        </button>
+
+                    </form>
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <p>No recipes yet.</p>
+
+    {% endif %}
+
+</body>
+
+</html>

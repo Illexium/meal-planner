@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Meal</title>
+</head>
+
+<body>
+
+    <h1>Edit Planned Meal</h1>
+
+    <form method="POST">
+
+        <label>Date:</label>
+
+        <input type="date" name="meal_date" value="{{ entry.meal_date }}" min="{{ meal_plan.start_date }}"
+            max="{{ meal_plan.end_date }}" required>
+
+        <br><br>
+
+        <label>Meal type:</label>
+
+        <select name="meal_type" required>
+
+            <option value="Breakfast" {% if entry.meal_type=="Breakfast" %}selected{% endif %}>
+                Breakfast
+            </option>
+
+            <option value="Lunch" {% if entry.meal_type=="Lunch" %}selected{% endif %}>
+                Lunch
+            </option>
+
+            <option value="Dinner" {% if entry.meal_type=="Dinner" %}selected{% endif %}>
+                Dinner
+            </option>
+
+            <option value="Snack" {% if entry.meal_type=="Snack" %}selected{% endif %}>
+                Snack
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <label>Recipe:</label>
+
+        <select name="recipe_id" required>
+
+            {% for recipe in recipes %}
+
+            <option value="{{ recipe.recipe_id }}" {% if recipe.recipe_id==entry.recipe_id %} selected {% endif %}>
+                {{ recipe.recipe_name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Save changes
+        </button>
+
+        <a href="{{ url_for(
+            'meal_plans.meal_plan_details',
+            meal_plan_id=meal_plan.meal_plan_id
+        ) }}">
+            Cancel
+        </a>
+
+    </form>
+
+</body>
+
+</html>
