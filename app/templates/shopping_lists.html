@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}
+Shopping Lists | Meal Planner
+{% endblock %}
+
+{% block content %}
+
+<h1>Shopping Lists</h1>
+
+<div class="card">
+
+    <h2>Generate shopping list</h2>
+
+    {% if meal_plans %}
+
+    <form method="POST" action="{{ url_for(
+                'shopping_lists.generate_shopping_list'
+            ) }}">
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>Meal plan</label>
+
+                <select name="meal_plan_id" required>
+
+                    <option value="">
+                        Select meal plan
+                    </option>
+
+                    {% for plan in meal_plans %}
+
+                    <option value="{{ plan.meal_plan_id }}">
+                        {{ plan.start_date }}
+                        —
+                        {{ plan.end_date }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <button type="submit">
+                Generate
+            </button>
+
+        </div>
+
+    </form>
+
+    {% else %}
+
+    <p class="empty-state">
+        Create a meal plan first.
+    </p>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>Generated shopping lists</h2>
+
+    {% if shopping_lists %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Created</th>
+                    <th>Meal plan</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for shopping_list in shopping_lists %}
+
+                <tr>
+
+                    <td>
+                        {{ shopping_list.created_date }}
+                    </td>
+
+                    <td>
+                        {{ shopping_list.meal_plan.start_date }}
+                        —
+                        {{ shopping_list.meal_plan.end_date }}
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <a class="button" href="{{ url_for(
+                                            'shopping_lists.shopping_list_details',
+                                            shopping_list_id=shopping_list.shopping_list_id
+                                        ) }}">
+                                Open
+                            </a>
+
+                            <form method="POST" action="{{ url_for(
+                                            'shopping_lists.delete_shopping_list',
+                                            shopping_list_id=shopping_list.shopping_list_id
+                                        ) }}">
+                                <button class="button-danger" type="submit">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <p class="empty-state">
+        No shopping lists generated yet.
+    </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}
+Shopping List | Meal Planner
+{% endblock %}
+
+{% block content %}
+
+<h1>Shopping List</h1>
+
+<p class="muted">
+    Meal plan:
+    {{ shopping_list.meal_plan.start_date }}
+    —
+    {{ shopping_list.meal_plan.end_date }}
+</p>
+
+<div class="card">
+
+    {% if shopping_list.items %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Required</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th>Purchase</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for item in shopping_list.items %}
+
+                <tr>
+
+                    <td>
+                        {{ item.product.product_name }}
+                    </td>
+
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+
+                    <td>
+                        {{ item.product.product_unit }}
+                    </td>
+
+                    <td>
+                        {% if item.is_purchased %}
+                        Purchased
+                        {% else %}
+                        Not purchased
+                        {% endif %}
+                    </td>
+
+                    <td>
+
+                        {% if not item.is_purchased %}
+
+                        <form method="POST" action="{{ url_for(
+                                            'shopping_lists.purchase_shopping_list_item',
+                                            shopping_list_id=shopping_list.shopping_list_id,
+                                            item_id=item.shopping_list_item_id
+                                        ) }}">
+
+                            <div class="form-row">
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Quantity
+                                    </label>
+
+                                    <input type="number" name="purchased_quantity" step="0.01" min="0.01"
+                                        value="{{ item.quantity }}" required>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Expiration date
+                                    </label>
+
+                                    <input type="date" name="expiration_date">
+
+                                </div>
+
+                                <button type="submit">
+                                    Add to inventory
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                        {% else %}
+
+                        <span class="muted">
+                            Added to inventory
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <p class="empty-state">
+        No missing products. Your inventory contains everything required for this meal plan.
+    </p>
+
+    {% endif %}
+
+</div>
+
+<a class="button button-secondary" href="{{ url_for(
+        'shopping_lists.shopping_list_list'
+    ) }}">
+    Back
+</a>
+
+{% endblock %}

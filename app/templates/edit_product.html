@@ -1,49 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Product</title>
-</head>
+{% block title %}
+Edit Product | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Edit Product</h1>
+<h1>Edit Product</h1>
+
+<div class="card">
 
     <form method="POST">
 
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ product.product_name }}" required>
+        <div class="form-group">
 
-        <br><br>
+            <label>Name</label>
 
-        <label>Category:</label>
-        <input type="text" name="category" value="{{ product.product_category }}" required>
+            <input type="text" name="name" value="{{ product.product_name }}" required>
 
-        <br><br>
+        </div>
 
-        <label>Unit:</label>
-        <input type="text" name="unit" value="{{ product.product_unit }}" required>
+        <br>
 
-        <br><br>
+        <div class="form-group">
 
-        <button type="submit">
-            Save changes
-        </button>
+            <label>Category</label>
 
-        <a href="{{ url_for('products.product_list') }}">
-            Cancel
-        </a>
+            <input type="text" name="category" value="{{ product.product_category }}" required>
+
+        </div>
+
+        <br>
+
+        <div class="form-group">
+
+            <label>Unit</label>
+
+            <input type="text" name="unit" value="{{ product.product_unit }}" required>
+
+        </div>
+
+        <br>
+
+        <div class="actions">
+
+            <button type="submit">
+                Save changes
+            </button>
+
+            <a class="button button-secondary" href="{{ url_for('products.product_list') }}">
+                Cancel
+            </a>
+
+        </div>
 
     </form>
 
-</body>
-<nav>
-    <a href="{{ url_for('products.product_list') }}">Products</a>
-    |
-    <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
-</nav>
+</div>
 
-<hr>
-
-</html>
+{% endblock %}

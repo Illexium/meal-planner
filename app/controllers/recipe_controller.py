@@ -92,7 +92,8 @@ def add_ingredient(recipe_id):
 
     product_id = request.form["product_id"]
     quantity = request.form["quantity"]
-    unit = request.form["unit"]
+
+    product = Product.query.get_or_404(product_id)
 
     ingredient = Ingredient(
         recipe_id=recipe.recipe_id
@@ -100,9 +101,8 @@ def add_ingredient(recipe_id):
 
     try:
         ingredient.update_ingredient(
-            product_id,
-            quantity,
-            unit
+            product,
+            quantity
         )
     except ValueError as error:
         return str(error), 400
@@ -122,6 +122,10 @@ def add_ingredient(recipe_id):
     "/recipes/<int:recipe_id>/ingredients/edit/<int:ingredient_id>",
     methods=["GET", "POST"]
 )
+@recipe_bp.route(
+    "/recipes/<int:recipe_id>/ingredients/edit/<int:ingredient_id>",
+    methods=["GET", "POST"]
+)
 def edit_ingredient(recipe_id, ingredient_id):
     recipe = Recipe.query.get_or_404(recipe_id)
 
@@ -135,13 +139,13 @@ def edit_ingredient(recipe_id, ingredient_id):
     if request.method == "POST":
         product_id = request.form["product_id"]
         quantity = request.form["quantity"]
-        unit = request.form["unit"]
+
+        product = Product.query.get_or_404(product_id)
 
         try:
             ingredient.update_ingredient(
-                product_id,
-                quantity,
-                unit
+                product,
+                quantity
             )
         except ValueError as error:
             return str(error), 400

@@ -1,77 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Meal</title>
-</head>
+{% block title %}
+Edit Planned Meal | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Edit Planned Meal</h1>
+<h1>Edit Planned Meal</h1>
+
+<div class="card">
 
     <form method="POST">
 
-        <label>Date:</label>
+        <div class="form-group">
 
-        <input type="date" name="meal_date" value="{{ entry.meal_date }}" min="{{ meal_plan.start_date }}"
-            max="{{ meal_plan.end_date }}" required>
+            <label>Date</label>
 
-        <br><br>
+            <input type="date" name="meal_date" value="{{ entry.meal_date }}" min="{{ meal_plan.start_date }}"
+                max="{{ meal_plan.end_date }}" required>
 
-        <label>Meal type:</label>
+        </div>
 
-        <select name="meal_type" required>
+        <br>
 
-            <option value="Breakfast" {% if entry.meal_type=="Breakfast" %}selected{% endif %}>
-                Breakfast
-            </option>
+        <div class="form-group">
 
-            <option value="Lunch" {% if entry.meal_type=="Lunch" %}selected{% endif %}>
-                Lunch
-            </option>
+            <label>Meal type</label>
 
-            <option value="Dinner" {% if entry.meal_type=="Dinner" %}selected{% endif %}>
-                Dinner
-            </option>
+            <select name="meal_type" required>
 
-            <option value="Snack" {% if entry.meal_type=="Snack" %}selected{% endif %}>
-                Snack
-            </option>
+                <option value="Breakfast" {% if entry.meal_type=="Breakfast" %} selected {% endif %}>
+                    Breakfast
+                </option>
 
-        </select>
+                <option value="Lunch" {% if entry.meal_type=="Lunch" %} selected {% endif %}>
+                    Lunch
+                </option>
 
-        <br><br>
+                <option value="Dinner" {% if entry.meal_type=="Dinner" %} selected {% endif %}>
+                    Dinner
+                </option>
 
-        <label>Recipe:</label>
+                <option value="Snack" {% if entry.meal_type=="Snack" %} selected {% endif %}>
+                    Snack
+                </option>
 
-        <select name="recipe_id" required>
+            </select>
 
-            {% for recipe in recipes %}
+        </div>
 
-            <option value="{{ recipe.recipe_id }}" {% if recipe.recipe_id==entry.recipe_id %} selected {% endif %}>
-                {{ recipe.recipe_name }}
-            </option>
+        <br>
 
-            {% endfor %}
+        <div class="form-group">
 
-        </select>
+            <label>Recipe</label>
 
-        <br><br>
+            <select name="recipe_id" required>
 
-        <button type="submit">
-            Save changes
-        </button>
+                {% for recipe in recipes %}
 
-        <a href="{{ url_for(
-            'meal_plans.meal_plan_details',
-            meal_plan_id=meal_plan.meal_plan_id
-        ) }}">
-            Cancel
-        </a>
+                <option value="{{ recipe.recipe_id }}" {% if recipe.recipe_id==entry.recipe_id %} selected {% endif %}>
+                    {{ recipe.recipe_name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <br>
+
+        <div class="actions">
+
+            <button type="submit">
+                Save changes
+            </button>
+
+            <a class="button button-secondary" href="{{ url_for(
+                    'meal_plans.meal_plan_details',
+                    meal_plan_id=meal_plan.meal_plan_id
+                ) }}">
+                Cancel
+            </a>
+
+        </div>
 
     </form>
 
-</body>
+</div>
 
-</html>
+{% endblock %}

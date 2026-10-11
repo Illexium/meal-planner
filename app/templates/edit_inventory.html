@@ -1,60 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Inventory Item</title>
-</head>
+{% block title %}
+Edit Inventory Item | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Edit Inventory Item</h1>
+<h1>Edit Inventory Item</h1>
+
+<div class="card">
 
     <form method="POST">
 
-        <label>Product:</label>
+        <div class="form-group">
 
-        <select name="product_id" required>
+            <label>Product</label>
 
-            {% for product in products %}
-            <option value="{{ product.product_id }}" {% if product.product_id==item.product_id %} selected {% endif %}>
-                {{ product.product_name }}
-            </option>
-            {% endfor %}
+            <select name="product_id" required>
 
-        </select>
+                {% for product in products %}
+                <option value="{{ product.product_id }}" {% if product.product_id==item.product_id %} selected {% endif
+                    %}>
+                    {{ product.product_name }}
+                    ({{ product.product_unit }})
+                </option>
+                {% endfor %}
 
-        <br><br>
+            </select>
 
-        <label>Quantity:</label>
+        </div>
 
-        <input type="number" step="0.01" name="quantity" value="{{ item.quantity }}" required>
+        <br>
 
-        <br><br>
+        <div class="form-group">
 
-        <label>Expiration date:</label>
+            <label>Quantity</label>
 
-        <input type="date" name="expiration_date" value="{{ item.expiration_date or '' }}">
+            <input type="number" step="0.01" min="0.01" name="quantity" value="{{ item.quantity }}" required>
 
-        <br><br>
+        </div>
 
-        <button type="submit">
-            Save changes
-        </button>
+        <br>
 
-        <a href="{{ url_for('inventory.inventory_list') }}">
-            Cancel
-        </a>
+        <div class="form-group">
+
+            <label>Expiration date</label>
+
+            <input type="date" name="expiration_date" value="{{ item.expiration_date or '' }}">
+
+        </div>
+
+        <br>
+
+        <div class="actions">
+
+            <button type="submit">
+                Save changes
+            </button>
+
+            <a class="button button-secondary" href="{{ url_for('inventory.inventory_list') }}">
+                Cancel
+            </a>
+
+        </div>
 
     </form>
 
-</body>
-<nav>
-    <a href="{{ url_for('products.product_list') }}">Products</a>
-    |
-    <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
-</nav>
+</div>
 
-<hr>
-
-</html>
+{% endblock %}

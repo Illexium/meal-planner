@@ -1,45 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Recipe</title>
-</head>
+{% block title %}
+Edit Recipe | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Edit Recipe</h1>
+<h1>Edit Recipe</h1>
+
+<div class="card">
 
     <form method="POST">
 
-        <label>Name:</label>
+        <div class="form-group">
 
-        <input type="text" name="name" value="{{ recipe.recipe_name }}" required>
+            <label>Recipe name</label>
 
-        <br><br>
+            <input type="text" name="name" value="{{ recipe.recipe_name }}" required>
 
-        <label>Description:</label>
+        </div>
 
-        <input type="text" name="description" value="{{ recipe.recipe_descr }}">
+        <br>
 
-        <br><br>
+        <div class="form-group">
 
-        <label>Servings:</label>
+            <label>Description</label>
 
-        <input type="number" name="servings" min="1" value="{{ recipe.servings }}" required>
+            <textarea name="description">{{ recipe.recipe_descr }}</textarea>
 
-        <br><br>
+        </div>
 
-        <button type="submit">
-            Save changes
-        </button>
+        <br>
 
-        <a href="{{ url_for('recipes.recipe_list') }}">
-            Cancel
-        </a>
+        <div class="form-group">
+
+            <label>Servings</label>
+
+            <input type="number" name="servings" min="1" value="{{ recipe.servings }}" required>
+
+        </div>
+
+        <br>
+
+        <div class="actions">
+
+            <button type="submit">
+                Save changes
+            </button>
+
+            <a class="button button-secondary" href="{{ url_for('recipes.recipe_list') }}">
+                Cancel
+            </a>
+
+        </div>
 
     </form>
 
-</body>
+</div>
 
-</html>
+{% endblock %}

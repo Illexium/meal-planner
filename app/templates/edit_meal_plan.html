@@ -1,39 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Meal Plan</title>
-</head>
+{% block title %}
+Edit Meal Plan | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Edit Meal Plan</h1>
+<h1>Edit Meal Plan</h1>
+
+<div class="card">
 
     <form method="POST">
 
-        <label>Start date:</label>
+        <div class="form-group">
 
-        <input type="date" name="start_date" value="{{ meal_plan.start_date }}" required>
+            <label>Start date</label>
 
-        <br><br>
+            <input type="date" name="start_date" value="{{ meal_plan.start_date }}" required>
 
-        <label>End date:</label>
+        </div>
 
-        <input type="date" name="end_date" value="{{ meal_plan.end_date }}" required>
+        <br>
 
-        <br><br>
+        <div class="form-group">
 
-        <button type="submit">
-            Save changes
-        </button>
+            <label>End date</label>
 
-        <a href="{{ url_for('meal_plans.meal_plan_list') }}">
-            Cancel
-        </a>
+            <input type="date" name="end_date" value="{{ meal_plan.end_date }}" required>
+
+        </div>
+
+        <br>
+
+        <div class="actions">
+
+            <button type="submit">
+                Save changes
+            </button>
+
+            <a class="button button-secondary" href="{{ url_for('meal_plans.meal_plan_list') }}">
+                Cancel
+            </a>
+
+        </div>
 
     </form>
 
-</body>
+</div>
 
-</html>
+{% endblock %}

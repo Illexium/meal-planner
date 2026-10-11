@@ -1,107 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Recipes</title>
-</head>
+{% block title %}
+Recipes | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <nav>
-        <a href="{{ url_for('products.product_list') }}">Products</a>
-        |
-        <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
-        |
-        <a href="{{ url_for('recipes.recipe_list') }}">Recipes</a>
-    </nav>
+<h1>Recipes</h1>
 
-    <hr>
-
-    <h1>Recipes</h1>
+<div class="card">
 
     <h2>Add recipe</h2>
 
     <form method="POST" action="{{ url_for('recipes.add_recipe') }}">
 
-        <input type="text" name="name" placeholder="Recipe name" required>
+        <div class="form-row">
 
-        <input type="text" name="description" placeholder="Description">
+            <div class="form-group">
+                <label>Recipe name</label>
 
-        <input type="number" name="servings" min="1" placeholder="Servings" required>
+                <input type="text" name="name" required>
+            </div>
 
-        <button type="submit">
-            Add recipe
-        </button>
+            <div class="form-group">
+                <label>Description</label>
+
+                <input type="text" name="description">
+            </div>
+
+            <div class="form-group">
+                <label>Servings</label>
+
+                <input type="number" name="servings" min="1" required>
+            </div>
+
+            <button type="submit">
+                Add recipe
+            </button>
+
+        </div>
 
     </form>
 
-    <hr>
+</div>
+
+
+<div class="card">
 
     <h2>Recipe list</h2>
 
     {% if recipes %}
 
-    <table border="1" cellpadding="8">
+    <div class="table-wrapper">
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Servings</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <table>
 
-        <tbody>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Servings</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-            {% for recipe in recipes %}
+            <tbody>
 
-            <tr>
-                <td>{{ recipe.recipe_name }}</td>
-                <td>{{ recipe.recipe_descr }}</td>
-                <td>{{ recipe.servings }}</td>
+                {% for recipe in recipes %}
 
-                <td>
-                    <a href="{{ url_for(
-                    'recipes.recipe_ingredients',
-                    recipe_id=recipe.recipe_id
-                ) }}">
-                        Ingredients
-                    </a>
-                    <a href="{{ url_for(
-            'recipes.edit_recipe',
-            recipe_id=recipe.recipe_id
-        ) }}">
-                        Edit
-                    </a>
+                <tr>
 
-                    <form method="POST" action="{{ url_for(
-                  'recipes.delete_recipe',
-                  recipe_id=recipe.recipe_id
-              ) }}" style="display: inline;">
+                    <td>{{ recipe.recipe_name }}</td>
+                    <td>{{ recipe.recipe_descr }}</td>
+                    <td>{{ recipe.servings }}</td>
 
+                    <td>
 
-                        <button type="submit">
-                            Delete
-                        </button>
+                        <div class="actions">
 
-                    </form>
-                </td>
-            </tr>
+                            <a class="button button-secondary" href="{{ url_for(
+                                            'recipes.recipe_ingredients',
+                                            recipe_id=recipe.recipe_id
+                                        ) }}">
+                                Ingredients
+                            </a>
 
-            {% endfor %}
+                            <a class="button button-secondary" href="{{ url_for(
+                                            'recipes.edit_recipe',
+                                            recipe_id=recipe.recipe_id
+                                        ) }}">
+                                Edit
+                            </a>
 
-        </tbody>
+                            <form method="POST" action="{{ url_for(
+                                            'recipes.delete_recipe',
+                                            recipe_id=recipe.recipe_id
+                                        ) }}">
+                                <button class="button-danger" type="submit">
+                                    Delete
+                                </button>
+                            </form>
 
-    </table>
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     {% else %}
 
-    <p>No recipes yet.</p>
+    <p class="empty-state">
+        No recipes yet.
+    </p>
 
     {% endif %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

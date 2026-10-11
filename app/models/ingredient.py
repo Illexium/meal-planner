@@ -4,7 +4,10 @@ from app import db
 class Ingredient(db.Model):
     __tablename__ = "ingredients"
 
-    ingredient_id = db.Column(db.Integer, primary_key=True)
+    ingredient_id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     recipe_id = db.Column(
         db.Integer,
@@ -18,8 +21,15 @@ class Ingredient(db.Model):
         nullable=False
     )
 
-    ingredient_quantity = db.Column(db.Float, nullable=False)
-    ingredient_unit = db.Column(db.String(50), nullable=False)
+    ingredient_quantity = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    ingredient_unit = db.Column(
+        db.String(50),
+        nullable=False
+    )
 
     product = db.relationship(
         "Product",
@@ -30,22 +40,22 @@ class Ingredient(db.Model):
         quantity = float(quantity)
 
         if quantity <= 0:
-            raise ValueError("Ingredient quantity must be greater than zero.")
+            raise ValueError(
+                "Ingredient quantity must be greater than zero."
+            )
 
         self.ingredient_quantity = quantity
 
-    def update_ingredient(self, product_id, quantity, unit):
-        unit = unit.strip()
-
-        if not unit:
-            raise ValueError("Ingredient unit is required.")
-
-        self.product_id = product_id
+    def update_ingredient(self, product, quantity):
+        self.product = product
         self.update_quantity(quantity)
-        self.ingredient_unit = unit
+
+        # Unit always comes from Product
+        self.ingredient_unit = product.product_unit
 
     def __repr__(self):
         return (
-            f"<Ingredient {self.ingredient_quantity} "
+            f"<Ingredient "
+            f"{self.ingredient_quantity} "
             f"{self.ingredient_unit}>"
         )

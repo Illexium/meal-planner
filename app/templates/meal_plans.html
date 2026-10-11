@@ -1,123 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Meal Plans</title>
-</head>
+{% block title %}
+Meal Plans | Meal Planner
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <nav>
-        <a href="{{ url_for('products.product_list') }}">
-            Products
-        </a>
-        |
-        <a href="{{ url_for('inventory.inventory_list') }}">
-            Inventory
-        </a>
-        |
-        <a href="{{ url_for('recipes.recipe_list') }}">
-            Recipes
-        </a>
-        |
-        <a href="{{ url_for('meal_plans.meal_plan_list') }}">
-            Meal Plans
-        </a>
-    </nav>
+<h1>Meal Plans</h1>
 
-    <hr>
-
-    <h1>Meal Plans</h1>
+<div class="card">
 
     <h2>Create meal plan</h2>
 
     <form method="POST" action="{{ url_for('meal_plans.add_meal_plan') }}">
 
-        <label>Start date:</label>
+        <div class="form-row">
 
-        <input type="date" name="start_date" required>
+            <div class="form-group">
+                <label>Start date</label>
 
-        <label>End date:</label>
+                <input type="date" name="start_date" required>
+            </div>
 
-        <input type="date" name="end_date" required>
+            <div class="form-group">
+                <label>End date</label>
 
-        <button type="submit">
-            Create meal plan
-        </button>
+                <input type="date" name="end_date" required>
+            </div>
+
+            <button type="submit">
+                Create meal plan
+            </button>
+
+        </div>
 
     </form>
 
-    <hr>
+</div>
+
+
+<div class="card">
 
     <h2>Meal plan list</h2>
 
     {% if meal_plans %}
 
-    <table border="1" cellpadding="8">
+    <div class="table-wrapper">
 
-        <thead>
-            <tr>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <table>
 
-        <tbody>
+            <thead>
+                <tr>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-            {% for plan in meal_plans %}
+            <tbody>
 
-            <tr>
-                <td>
-                    {{ plan.start_date }}
-                </td>
+                {% for plan in meal_plans %}
 
-                <td>
-                    {{ plan.end_date }}
-                </td>
+                <tr>
 
-                <td>
+                    <td>{{ plan.start_date }}</td>
+                    <td>{{ plan.end_date }}</td>
 
-                    <a href="{{ url_for(
-                                'meal_plans.meal_plan_details',
-                                meal_plan_id=plan.meal_plan_id
-                            ) }}">
-                        Open
-                    </a>
-                    <a href="{{ url_for(
-            'meal_plans.edit_meal_plan',
-            meal_plan_id=plan.meal_plan_id
-        ) }}">
-                        Edit
-                    </a>
+                    <td>
 
-                    <form method="POST" action="{{ url_for(
-                                    'meal_plans.delete_meal_plan',
-                                    meal_plan_id=plan.meal_plan_id
-                                ) }}" style="display: inline;">
+                        <div class="actions">
 
-                        <button type="submit">
-                            Delete
-                        </button>
+                            <a class="button" href="{{ url_for(
+                                            'meal_plans.meal_plan_details',
+                                            meal_plan_id=plan.meal_plan_id
+                                        ) }}">
+                                Open
+                            </a>
 
-                    </form>
+                            <a class="button button-secondary" href="{{ url_for(
+                                            'meal_plans.edit_meal_plan',
+                                            meal_plan_id=plan.meal_plan_id
+                                        ) }}">
+                                Edit
+                            </a>
 
-                </td>
-            </tr>
+                            <form method="POST" action="{{ url_for(
+                                            'meal_plans.delete_meal_plan',
+                                            meal_plan_id=plan.meal_plan_id
+                                        ) }}" onsubmit="return confirm(
+                                            'Delete this meal plan? Associated shopping lists will also be deleted.'
+                                        );">
+                                <button class="button-danger" type="submit">
+                                    Delete
+                                </button>
+                            </form>
 
-            {% endfor %}
+                        </div>
 
-        </tbody>
+                    </td>
 
-    </table>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     {% else %}
 
-    <p>No meal plans yet.</p>
+    <p class="empty-state">
+        No meal plans yet.
+    </p>
 
     {% endif %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

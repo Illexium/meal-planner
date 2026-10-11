@@ -20,11 +20,15 @@ def create_app():
     from app.controllers.inventory_controller import inventory_bp
     from app.controllers.recipe_controller import recipe_bp
     from app.controllers.meal_plan_controller import meal_plan_bp
+    from app.controllers.shopping_list_controller import (
+        shopping_list_bp
+    )
 
     app.register_blueprint(product_bp)
     app.register_blueprint(inventory_bp)
     app.register_blueprint(recipe_bp)
     app.register_blueprint(meal_plan_bp)
+    app.register_blueprint(shopping_list_bp)
 
     @app.route("/")
     def home():

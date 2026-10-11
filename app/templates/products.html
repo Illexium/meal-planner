@@ -1,100 +1,150 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Products</title>
-</head>
+{% block title %}
+Products | Meal Planner
+{% endblock %}
 
-<body>
 
-    <h1>Products</h1>
+{% block content %}
+
+<h1>Products</h1>
+
+
+<div class="card">
 
     <h2>Add product</h2>
 
     <form method="POST" action="{{ url_for('products.add_product') }}">
 
-        <input type="text" name="name" placeholder="Product name" required>
+        <div class="form-row">
 
-        <input type="text" name="category" placeholder="Category" required>
+            <div class="form-group">
 
-        <input type="text" name="unit" placeholder="Unit" required>
+                <label>
+                    Product name
+                </label>
 
-        <button type="submit">Add product</button>
+                <input type="text" name="name" placeholder="Milk" required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Category
+                </label>
+
+                <input type="text" name="category" placeholder="Dairy" required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Unit
+                </label>
+
+                <input type="text" name="unit" placeholder="ml" required>
+
+            </div>
+
+
+            <button type="submit">
+                Add product
+            </button>
+
+        </div>
+
     </form>
 
-    <hr>
+</div>
+
+
+<div class="card">
 
     <h2>Product list</h2>
 
     {% if products %}
 
-    <table border="1" cellpadding="8">
+    <div class="table-wrapper">
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Unit</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <table>
 
-        <tbody>
-
-            {% for product in products %}
-
-            <tr>
-
-                <td>{{ product.product_name }}</td>
-                <td>{{ product.product_category }}</td>
-                <td>{{ product.product_unit }}</td>
-
-                <td>
-
-                    <a href="{{ url_for(
-                                'products.edit_product',
-                                product_id=product.product_id
-                            ) }}">
-                        Edit
-                    </a>
-
-                    <form method="POST" action="{{ url_for(
-                                      'products.delete_product',
-                                      product_id=product.product_id
-                                  ) }}" style="display: inline;">
-
-                        <button type="submit">
-                            Delete
-                        </button>
-
-                    </form>
-
-                </td>
-
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Unit</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
 
-    </table>
+            <tbody>
+
+                {% for product in products %}
+
+                <tr>
+
+                    <td>
+                        {{ product.product_name }}
+                    </td>
+
+                    <td>
+                        {{ product.product_category }}
+                    </td>
+
+                    <td>
+                        {{ product.product_unit }}
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <a class="button button-secondary" href="{{ url_for(
+                                            'products.edit_product',
+                                            product_id=product.product_id
+                                        ) }}">
+                                Edit
+                            </a>
+
+
+                            <form method="POST" action="{{ url_for(
+                                            'products.delete_product',
+                                            product_id=product.product_id
+                                        ) }}">
+
+                                <button class="button-danger" type="submit">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     {% else %}
 
-    <p>No products yet.</p>
+    <p class="empty-state">
+        No products yet.
+    </p>
 
     {% endif %}
 
-</body>
+</div>
 
-<nav>
-    <a href="{{ url_for('products.product_list') }}">Products</a>
-    |
-    <a href="{{ url_for('inventory.inventory_list') }}">Inventory</a>
-</nav>
-
-<hr>
-
-</html>
+{% endblock %}

@@ -160,6 +160,11 @@ def delete_meal_plan(meal_plan_id):
         meal_plan_id
     )
 
+    for shopping_list in list(
+        meal_plan.shopping_lists
+    ):
+        db.session.delete(shopping_list)
+
     db.session.delete(meal_plan)
     db.session.commit()
 
